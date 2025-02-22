@@ -14,6 +14,7 @@ namespace filerename.v1
     {
         static string dbPath = "file_mapping.db";
         static string logPath = "rename_log.json";
+        //Change the sal value to anything
         static int salt = 007;
 
         static void Main()
@@ -90,9 +91,10 @@ namespace filerename.v1
             byte[] bytes = Encoding.UTF8.GetBytes(input);
             for (int i = 0; i < bytes.Length; i++)
             {
-                bytes[i] = (byte)(bytes[i] + offset); // Apply offset/salt
+                bytes[i] = (byte)((bytes[i] + offset) % 256);
             }
-            return Convert.ToBase64String(bytes);
+            string base64 = Convert.ToBase64String(bytes);
+            return base64.Replace("/", "_").Replace("+", "-");
         }
 
     }
