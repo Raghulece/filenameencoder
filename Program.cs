@@ -30,7 +30,8 @@ namespace filerename.v1
             }
 
             InitializeDatabase();
-            List<FileLog> logEntries = new List<FileLog>();
+            List<FileLog> logEntries = LoadExistingLogs();
+            //List<FileLog> logEntries = new List<FileLog>();
 
             foreach (var file in Directory.GetFiles(inputFolder))
             {
@@ -95,6 +96,23 @@ namespace filerename.v1
             }
             string base64 = Convert.ToBase64String(bytes);
             return base64.Replace("/", "_").Replace("+", "-");
+        }
+
+        static List<FileLog> LoadExistingLogs()
+        {
+            if (File.Exists(logPath))
+            {
+                try
+                {
+                    string existingLogs = File.ReadAllText(logPath);
+                    return JsonSerializer.Deserialize<List<FileLog>>(existingLogs) ?? new List<FileLog>();
+                }
+                catch
+                {
+                    return new List<FileLog>();
+                }
+            }
+            return new List<FileLog>();
         }
 
     }
