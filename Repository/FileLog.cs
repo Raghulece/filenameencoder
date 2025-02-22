@@ -11,5 +11,6 @@ namespace filerename.v1.Repository
         public string OriginalName { get; set; }
         public string NewName { get; set; }
         public DateTime Timestamp { get; set; }
+        public string Filepath { get; set; }
     }
 }
